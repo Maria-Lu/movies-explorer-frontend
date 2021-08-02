@@ -1,7 +1,22 @@
+import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import AuthPage from '../AuthPage/AuthPage';
-import './Register.css';
 
-function Register() {
+function Register({ onRegister, message, showMessage }) {
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
+
+  const { name, email, password } = values;
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onRegister({
+      name,
+      email,
+      password,
+    });
+    resetForm();
+  }
+
   return (
     <AuthPage
       title="Добро пожаловать!"
@@ -9,6 +24,10 @@ function Register() {
       question="Уже зарегистрированы?"
       path="/signin"
       linkText="Войти"
+      onSubmit={handleSubmit}
+      isValid={isValid}
+      message={message}
+      showMessage={showMessage}
     >
       <label className="auth__field">
         Имя
@@ -16,35 +35,41 @@ function Register() {
           name="name"
           type="text"
           className="auth__input"
-          defaultValue="Виталий"
           minLength="2"
           maxLength="30"
           required
+          autoComplete="off"
+          onChange={handleChange}
+          value={name || ''}
         />
       </label>
-      <span className="auth__error"></span>
+      <span className="auth__error">{errors.name}</span>
       <label htmlFor="email" className="auth__field">
         E-mail
         <input
           name="email"
           type="email"
-          className="auth__input auth__input_type_email"
-          defaultValue="pochta@yandex.ru"
+          className="auth__input"
           required
+          autoComplete="off"
+          onChange={handleChange}
+          value={email || ''}
         />
       </label>
-      <span className="auth__error"></span>
+      <span className="auth__error">{errors.email}</span>
       <label className="auth__field">
         Пароль
         <input
           name="password"
           type="password"
-          className="auth__input auth__input_type_error"
-          defaultValue="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
+          className="auth__input"
           required
+          autoComplete="off"
+          onChange={handleChange}
+          value={password || ''}
         />
       </label>
-      <span className="auth__error">Что-то пошло не так...</span>
+      <span className="auth__error">{errors.password}</span>
     </AuthPage>
   );
 }

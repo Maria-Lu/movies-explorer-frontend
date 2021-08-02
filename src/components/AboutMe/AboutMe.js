@@ -10,12 +10,9 @@ function AboutMe() {
       <div className="student__container">
         <section className="student__info">
           <h3 className="student__name">Мария</h3>
-          <p className="student__about">Веб-разработчик, 30 лет</p>
+          <p className="student__about">Веб-разработчик</p>
           <p className="student__paragraph">
-            Живу в Ростове-на-Дону, закончила юридический факультет ЮФУ. Год
-            назад работала руководителем юридической службы, потом увлеклась
-            программированием и веб-разработкой, теперь работаю удаленно в новой
-            профессии. Люблю литературу, живопись, дизайн и новые технологии.
+            Люблю литературу, живопись, дизайн и новые технологии.
           </p>
           <ul className="student__links">
             <li className="student__links-item">

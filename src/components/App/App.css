@@ -40,21 +40,21 @@
   box-sizing: border-box;
   padding: 0;
   outline: none;
-  transition: opacity .3s ease-in;
+  transition: opacity 0.3s ease-in;
 }
 
 .button:hover {
-  opacity: .8;
+  opacity: 0.8;
   cursor: pointer;
 }
 
 .link {
   text-decoration: none;
-  transition: opacity .3s ease-in;
+  transition: opacity 0.3s ease-in;
 }
 
 .link:hover {
-  opacity: .8;
+  opacity: 0.8;
   cursor: pointer;
 }
 

@@ -17,7 +17,7 @@ function AboutProject() {
         </li>
         <li className="project__block">
           <h3 className="project__heading">
-            На выполнение диплома ушло 5 недель
+            На выполнение диплома ушло 4 недели
           </h3>
           <p className="project__paragraph">
             У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было
@@ -34,7 +34,7 @@ function AboutProject() {
         </li>
         <li className="project__chart-item">
           <p className="project__text project__text_background_grey">
-            4 недели
+            3 недели
           </p>
           <p className="project__text project__text_color_silver">Front-end</p>
         </li>

@@ -33,12 +33,11 @@
 }
 
 .search-form__input::-webkit-search-cancel-button {
- -webkit-appearance: none;
-    width: 8px;
-    height: 8px;
-    background: url(../../images/search-form/icon-clear.svg);
+  -webkit-appearance: none;
+  width: 8px;
+  height: 8px;
+  background: url(../../images/search-form/icon-clear.svg);
 }
-
 
 .search-form__button {
   width: 34px;
@@ -47,6 +46,22 @@
     center;
   border-radius: 48px;
   border: none;
+}
+
+.search-form__button_disabled {
+  background-color: #ebebeb;
+  cursor: default;
+  pointer-events: none;
+}
+
+.search-form_error {
+  display: inline-block;
+  height: 12px;
+  color: #ee3465;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  margin: 6px 0 0 22px;
 }
 
 @media screen and (max-width: 520px) {

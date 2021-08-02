@@ -1,9 +1,9 @@
 .filter-checkbox {
-  padding: 42px 0 70px;
+  padding: 24px 0 70px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #E8E8E8;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .filter-checkbox__title {
@@ -38,7 +38,7 @@
   height: 8px;
   background-color: #f5f5f5;
   border-radius: 50%;
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 .filter-checkbox__input:checked::before {
@@ -48,7 +48,7 @@
 
 @media screen and (max-width: 768px) {
   .filter-checkbox {
-    padding: 42px 0 50px;
+    padding: 24px 0 50px;
   }
 }
 

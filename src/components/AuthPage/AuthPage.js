@@ -14,6 +14,7 @@ function AuthPage({
   message,
   isValid,
   showMessage,
+  isLoading,
 }) {
   return (
     <div className="auth-page app__section">
@@ -28,10 +29,10 @@ function AuthPage({
             <Message message={message} showMessage={showMessage} />
             <button
               className={`button auth__button ${
-                isValid ? '' : 'auth__button_disabled'
+                !isLoading && isValid ? '' : 'auth__button_disabled'
               }`}
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || isLoading}
             >
               {buttonText}
             </button>

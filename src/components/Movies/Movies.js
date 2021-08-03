@@ -4,7 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
-import * as utils from '../../utils/utils';
+import { getMoreMovies, getMoviesQty, getShortMovies } from '../../utils/utils';
 import './Movies.css';
 
 function Movies({
@@ -17,19 +17,17 @@ function Movies({
 }) {
   const [movieSearchWord, setMovieSearchWord] = useState('');
   const [isFilterChecked, setIsFilterChecked] = useState(false);
-  const [moviesQty, setMoviesQty] = useState(utils.getMoviesQty());
+  const [moviesQty, setMoviesQty] = useState(getMoviesQty());
   const [allMovies, setAllMovies] = useState([]);
   const [currentMovies, setCurrentMovies] = useState([]);
 
   function handleSearchSubmit(value) {
     setMovieSearchWord(value);
-    if (!movies.length) {
-      onGetMovies();
-    }
+    onGetMovies(value);
   }
 
   function handleMoreButtonClick() {
-    setMoviesQty(moviesQty + utils.getMoreMovies());
+    setMoviesQty(moviesQty + getMoreMovies());
   }
 
   function toggleFilter() {
@@ -37,8 +35,7 @@ function Movies({
   }
 
   useEffect(() => {
-    const foundMovies = utils.getMovieByKeyword(movies, movieSearchWord);
-    const filteredMovies = utils.getShortMovies(foundMovies, isFilterChecked);
+    const filteredMovies = getShortMovies(movies, isFilterChecked);
     setAllMovies(filteredMovies);
     setCurrentMovies(filteredMovies.slice(0, moviesQty));
   }, [movies, movieSearchWord, isFilterChecked, moviesQty]);
@@ -46,8 +43,8 @@ function Movies({
   useEffect(() => {
     function updateWindowWidth() {
       setTimeout(() => {
-        setMoviesQty(utils.getMoviesQty());
-        setCurrentMovies(allMovies.slice(0, utils.getMoviesQty()));
+        setMoviesQty(getMoviesQty());
+        setCurrentMovies(allMovies.slice(0, getMoviesQty()));
       }, 1000);
     }
 
@@ -64,15 +61,18 @@ function Movies({
           onSearchSubmit={handleSearchSubmit}
           isFilterChecked={isFilterChecked}
           handleToggle={toggleFilter}
+          isLoading={isLoading}
         />
         {isLoading && <Preloader />}
-        <MoviesCardList
-          movies={currentMovies}
-          moreCards={currentMovies.length < allMovies.length}
-          onMoreCardsButtonClick={handleMoreButtonClick}
-          onCardButtonClick={onCardButtonClick}
-          searchMessage={searchMessage}
-        />
+        {!isLoading && (
+          <MoviesCardList
+            movies={currentMovies}
+            moreCards={currentMovies.length < allMovies.length}
+            onMoreCardsButtonClick={handleMoreButtonClick}
+            onCardButtonClick={onCardButtonClick}
+            searchMessage={searchMessage}
+          />
+        )}
       </main>
       <Footer />
     </>

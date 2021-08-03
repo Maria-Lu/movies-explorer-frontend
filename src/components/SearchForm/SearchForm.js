@@ -2,7 +2,12 @@ import { useState } from 'react';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import './SearchForm.css';
 
-function SearchForm({ onSearchSubmit, onFilterChecked, handleToggle }) {
+function SearchForm({
+  onSearchSubmit,
+  onFilterChecked,
+  handleToggle,
+  isLoading,
+}) {
   const [keyword, setKeyword] = useState('');
   const [error, setError] = useState('');
 
@@ -35,15 +40,19 @@ function SearchForm({ onSearchSubmit, onFilterChecked, handleToggle }) {
           onChange={handleChange}
         />
         <button
-          className="button search-form__button"
+          className={`button search-form__button ${
+            isLoading ? 'search-form__button_disabled' : ''
+          }`}
           type="submit"
           onClick={handleClick}
+          disabled={isLoading}
         ></button>
       </form>
       <span className="search-form_error">{error}</span>
       <FilterCheckbox
         onFilterChecked={onFilterChecked}
         handleToggle={handleToggle}
+        isLoading={isLoading}
       />
     </>
   );

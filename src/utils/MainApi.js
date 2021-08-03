@@ -5,7 +5,7 @@ class MainApi {
     this._credentials = credentials;
   }
 
-  getLoginData() {
+  getUserData() {
     return this._sendRequest('/users/me', 'GET', null);
   }
 
@@ -19,6 +19,10 @@ class MainApi {
 
   signOutUser() {
     return this._sendRequest('/signout', 'GET', null);
+  }
+
+  checkToken() {
+    return this._sendRequest('/users/me', 'GET', null);
   }
 
   getSavedMovies() {

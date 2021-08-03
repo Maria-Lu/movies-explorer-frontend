@@ -1,6 +1,6 @@
 import { Route } from 'react-router-dom';
 import './MoviesCard.css';
-import * as utils from '../../utils/utils';
+import { convertMovieLink, convertMovieDuration } from '../../utils/utils';
 
 function MoviesCard({ movie, onCardButtonClick }) {
   const likeButtonClassName = `button movies-card__like-button ${
@@ -13,7 +13,7 @@ function MoviesCard({ movie, onCardButtonClick }) {
 
   function getMovieImageLink(movie) {
     if (movie.image && movie.image.url) {
-      return utils.convertMovieLink(movie.image.url);
+      return convertMovieLink(movie.image.url);
     } else if (movie.image) {
       return movie.image;
     } else {
@@ -52,7 +52,7 @@ function MoviesCard({ movie, onCardButtonClick }) {
         </Route>
       </div>
       <p className="movies-card__duration">
-        {utils.convertMovieDuration(movie.duration)}
+        {convertMovieDuration(movie.duration)}
       </p>
     </article>
   );

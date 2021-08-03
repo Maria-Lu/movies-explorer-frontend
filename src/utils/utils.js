@@ -1,3 +1,5 @@
+import * as constants from './constants';
+
 export const convertMovieLink = (link) => {
   return `https://api.nomoreparties.co${link}`;
 };
@@ -14,31 +16,36 @@ export const getMovieByKeyword = (movies, keyword) =>
 export const markSavedMovies = (allMovies, savedMovies) => {
   savedMovies.forEach((savedMovie) => {
     const movie = allMovies.find((movie) => movie.nameRU === savedMovie.nameRU);
-    movie.isSaved = true;
+    if (typeof movie !== 'undefined') {
+      movie.isSaved = true;
+    }
   });
+
   return allMovies;
 };
 
 export const getShortMovies = (movies, checked) => {
-  return movies.filter((movie) => (checked ? movie.duration <= 40 : Number));
+  return movies.filter((movie) =>
+    checked ? movie.duration <= constants.SHORT_MOVIE_DURATION : Number
+  );
 };
 
 export const getMoviesQty = () => {
-  if (window.innerWidth <= 520) {
-    return 5;
-  } else if (window.innerWidth <= 768) {
-    return 8;
+  if (window.innerWidth <= constants.SMALL_SCREEN_SIZE) {
+    return constants.MIN_MOVIES_QUANTITY_TO_SHOW;
+  } else if (window.innerWidth <= constants.MIDDLE_SCREEN_SIZE) {
+    return constants.MIDDLE_MOVIES_QUANTITY_TO_SHOW;
   } else {
-    return 12;
+    return constants.MAX_MOVIES_QUANTITY_TO_SHOW;
   }
 };
 
 export const getMoreMovies = () => {
-  if (window.innerWidth <= 768) {
-    return 2;
-  } else if (window.innerWidth <= 1100) {
-    return 3;
+  if (window.innerWidth <= constants.MIDDLE_SCREEN_SIZE) {
+    return constants.MIN_MOVIES_QUANTITY_TO_ADD;
+  } else if (window.innerWidth <= constants.LARGE_SCREEN_SIZE) {
+    return constants.MIDDLE_MOVIES_QUANTITY_TO_ADD;
   } else {
-    return 4;
+    return constants.MAX_MOVIES_QUANTITY_TO_ADD;
   }
 };

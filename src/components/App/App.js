@@ -19,7 +19,11 @@ import Profile from '../Profile/Profile';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import './App.css';
-import * as utils from '../../utils/utils';
+import {
+  convertMovieLink,
+  markSavedMovies,
+  getMovieByKeyword,
+} from '../../utils/utils';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +42,7 @@ function App() {
   const history = useHistory();
 
   function handleSignUpSubmit(userData) {
+    setIsLoading(true);
     mainApi
       .signUpUser(userData)
       .then((res) => {
@@ -59,10 +64,14 @@ function App() {
           setRegisterMessage('При регистрации пользователя произошла ошибка.');
         }
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   function handleSignInSubmit(userData) {
+    setIsLoading(true);
     mainApi
       .signInUser(userData)
       .then((res) => {
@@ -83,6 +92,9 @@ function App() {
           setLoginMessage('Что-то пошло не так. Попробуйте еще раз.');
         }
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
@@ -100,11 +112,11 @@ function App() {
   }
 
   useEffect(() => {
-    function tokenCheck() {
+    function checkToken() {
       const jwt = localStorage.getItem('jwt');
       if (jwt) {
         mainApi
-          .getLoginData()
+          .checkToken()
           .then((res) => {
             setLoggedIn(true);
             if (path === '/signin' || path === '/signup') {
@@ -119,12 +131,12 @@ function App() {
       }
     }
 
-    tokenCheck();
+    checkToken();
   }, [history]);
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([mainApi.getLoginData(), mainApi.getSavedMovies()])
+      Promise.all([mainApi.getUserData(), mainApi.getSavedMovies()])
         .then(([userData, movies]) => {
           setCurrentUser({ email: userData.email, name: userData.name });
           setSavedMovies(movies.reverse());
@@ -159,13 +171,18 @@ function App() {
       });
   }
 
-  function getAllMovies() {
+  function getAllMovies(keyword) {
     setIsLoading(true);
     moviesApi
       .getMovies()
       .then((movies) => {
-        localStorage.setItem('all-movies', JSON.stringify(movies));
-        setMovies(utils.markSavedMovies(movies, savedMovies));
+        localStorage.setItem(
+          'foundMovies',
+          JSON.stringify(getMovieByKeyword(movies, keyword))
+        );
+        setMovies(
+          markSavedMovies(getMovieByKeyword(movies, keyword), savedMovies)
+        );
         setSearchMessage('Ничего не найдено.');
       })
       .catch((err) => {
@@ -186,9 +203,9 @@ function App() {
         description: movie.description,
         director: movie.director,
         duration: movie.duration,
-        image: utils.convertMovieLink(movie.image.url),
-        thumbnail: utils.convertMovieLink(movie.image.formats.thumbnail.url),
-        nameEN: movie.nameEN,
+        image: convertMovieLink(movie.image.url),
+        thumbnail: convertMovieLink(movie.image.formats.thumbnail.url),
+        nameEN: movie.nameEN || 'unknown',
         nameRU: movie.nameRU,
         trailer: movie.trailerLink,
         year: movie.year,
@@ -228,9 +245,9 @@ function App() {
   }
 
   useEffect(() => {
-    const allMovies = JSON.parse(localStorage.getItem('all-movies'));
-    if (allMovies) {
-      setMovies(utils.markSavedMovies(allMovies, savedMovies));
+    const foundMovies = JSON.parse(localStorage.getItem('foundMovies'));
+    if (foundMovies) {
+      setMovies(markSavedMovies(foundMovies, savedMovies));
       setSearchMessage('Ничего не найдено.');
     } else {
       setSearchMessage('Начните поиск.');
@@ -278,6 +295,7 @@ function App() {
               onLogin={handleSignInSubmit}
               message={loginMessage}
               showMessage={showMessage}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="/signup">
@@ -285,6 +303,7 @@ function App() {
               onRegister={handleSignUpSubmit}
               message={registerMessage}
               showMessage={showMessage}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="*">

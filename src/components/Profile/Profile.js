@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import Message from '../Message/Message';
 import { useFormWithValidation } from '../../hooks/useFormWithValidation';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
+import Preloader from '../Preloader/Preloader';
 import './Profile.css';
 
 function Profile({
@@ -42,6 +43,11 @@ function Profile({
 
   return (
     <>
+      {isLoading && (
+        <div className="preloader-popup">
+          <Preloader />
+        </div>
+      )}
       <Header loggedIn={loggedIn} />
       <main className="profile-content">
         <section className="profile">

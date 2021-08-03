@@ -4,7 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import './SavedMovies.css';
-import * as utils from '../../utils/utils';
+import { getMovieByKeyword, getShortMovies } from '../../utils/utils';
 
 function SavedMovies({ savedMovies, onCardButtonClick, loggedIn }) {
   const [movieSearchWord, setMovieSearchWord] = useState('');
@@ -20,8 +20,8 @@ function SavedMovies({ savedMovies, onCardButtonClick, loggedIn }) {
   }
 
   useEffect(() => {
-    const foundMovies = utils.getMovieByKeyword(savedMovies, movieSearchWord);
-    const filteredMovies = utils.getShortMovies(foundMovies, isFilterChecked);
+    const foundMovies = getMovieByKeyword(savedMovies, movieSearchWord);
+    const filteredMovies = getShortMovies(foundMovies, isFilterChecked);
     setMovies(filteredMovies);
   }, [savedMovies, movieSearchWord, isFilterChecked]);
 

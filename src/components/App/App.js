@@ -115,19 +115,12 @@ function App() {
     function checkToken() {
       const jwt = localStorage.getItem('jwt');
       if (jwt) {
-        mainApi
-          .getUserData()
-          .then((res) => {
-            setLoggedIn(true);
-            if (path === '/signin' || path === '/signup') {
-              history.push('/movies');
-            } else {
-              history.push(path);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        setLoggedIn(true);
+        if (path === '/signin' || path === '/signup') {
+          history.push('/movies');
+        } else {
+          history.push(path);
+        }
       }
     }
 
